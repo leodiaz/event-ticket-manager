@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('door_sales', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('recital_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('customer_name');
+
+            $table->integer('ticket_quantity');
+
+            $table->string('payment_method');
+
+            $table->decimal('total_amount', 10, 2);
+
             $table->timestamps();
         });
     }

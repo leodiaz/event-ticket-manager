@@ -13,6 +13,26 @@ return new class extends Migration
     {
         Schema::create('presale_orders', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('recital_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('order_number')->unique();
+
+            $table->string('customer_name');
+
+            $table->string('customer_email');
+
+            $table->integer('ticket_quantity');
+
+            $table->decimal('total_amount', 10, 2);
+
+            $table->string('qr_code')->unique();
+
+            $table->boolean('is_used')
+                ->default(false);
+
             $table->timestamps();
         });
     }

@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('recitals', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+            $table->date('event_date');
+            $table->string('location');
+
+            $table->decimal('ticket_price', 10, 2);
+
+            $table->text('additional_info')->nullable();
+
+            $table->decimal('food_revenue', 10, 2)
+                ->default(0);
+
+            $table->timestamp('closed_at')
+                ->nullable();
+
             $table->timestamps();
         });
     }
