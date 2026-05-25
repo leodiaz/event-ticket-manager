@@ -4,26 +4,26 @@
 
 <div class="mb-6">
     <h1 class="text-3xl font-bold">
-        Recitals
+        Presale Orders
     </h1>
 
     <p class="text-gray-600">
-        Manage your events and ticket sales.
+        Manage presale ticket orders.
     </p>
 </div>
 
 <div class="mb-6">
     <a
-        href="{{ route('recitals.create') }}"
+        href="{{ route('presale-orders.create') }}"
         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
     >
-        Create Recital
+        Create Order
     </a>
 </div>
 
 <div class="space-y-4">
 
-    @foreach($recitals as $recital)
+    @foreach($orders as $order)
 
         <div class="bg-white p-5 rounded shadow">
 
@@ -32,19 +32,23 @@
                 <div>
 
                     <h2 class="text-xl font-semibold">
-                        {{ $recital->name }}
+                        {{ $order->customer_name }}
                     </h2>
 
                     <p class="text-gray-600">
-                        📅 {{ $recital->event_date }}
+                        Event: {{ $order->recital->name }}
                     </p>
 
                     <p class="text-gray-600">
-                        📍 {{ $recital->location }}
+                        Email: {{ $order->customer_email }}
                     </p>
 
-                    <p class="font-medium mt-2">
-                        ${{ $recital->ticket_price }}
+                    <p>
+                        Tickets: {{ $order->ticket_quantity }}
+                    </p>
+
+                    <p class="font-medium">
+                        Total: ${{ $order->total_amount }}
                     </p>
 
                 </div>
@@ -52,14 +56,14 @@
                 <div class="flex gap-2">
 
                     <a
-                        href="{{ route('recitals.edit', $recital) }}"
+                        href="{{ route('presale-orders.edit', $order) }}"
                         class="bg-yellow-500 text-white px-3 py-1 rounded"
                     >
                         Edit
                     </a>
 
                     <form
-                        action="{{ route('recitals.destroy', $recital) }}"
+                        action="{{ route('presale-orders.destroy', $order) }}"
                         method="POST"
                     >
                         @csrf
@@ -71,7 +75,6 @@
                         >
                             Delete
                         </button>
-
                     </form>
 
                 </div>
