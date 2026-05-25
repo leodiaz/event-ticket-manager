@@ -13,5 +13,19 @@
         <p>{{ $recital->location }}</p>
 
         <p>${{ $recital->ticket_price }}</p>
+
+        <a href="{{ route('recitals.edit', $recital) }}">
+            Edit
+        </a>
+
+        <form action="{{ route('recitals.destroy', $recital) }}" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit">
+                Delete
+            </button>
+        </form>
+
     </div>
 @endforeach

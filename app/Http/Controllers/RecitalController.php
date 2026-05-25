@@ -31,4 +31,29 @@ class RecitalController extends Controller
 
         return redirect()->route('recitals.index');
     }
+
+    public function edit(Recital $recital)
+    {
+        return view('recitals.edit', compact('recital'));
+    }
+
+    public function update(Request $request, Recital $recital)
+    {
+        $recital->update([
+            'name' => $request->name,
+            'event_date' => $request->event_date,
+            'location' => $request->location,
+            'ticket_price' => $request->ticket_price,
+            'additional_info' => $request->additional_info,
+        ]);
+
+        return redirect()->route('recitals.index');
+    }
+
+    public function destroy(Recital $recital)
+    {
+        $recital->delete();
+
+        return redirect()->route('recitals.index');
+    }
 }
