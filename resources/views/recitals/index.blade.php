@@ -30,9 +30,10 @@
             <div class="flex justify-between items-start">
 
                 <div>
-
+                    <a href="{{ route('recitals.show', $recital) }}"class="bg-green-600 text-white px-3 py-1 rounded">Ver</a>
                     <h2 class="text-xl font-semibold">
                         {{ $recital->name }}
+                        
                     </h2>
 
                     <p class="text-gray-600">

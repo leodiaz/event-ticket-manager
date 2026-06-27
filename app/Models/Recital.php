@@ -8,7 +8,7 @@ class Recital extends Model
 {      
     protected $fillable = [
     'name',
-    'event_date',
+    'event_date' => 'date',
     'location',
     'ticket_price',
     'additional_info',

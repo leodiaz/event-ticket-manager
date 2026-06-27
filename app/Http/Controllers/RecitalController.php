@@ -56,4 +56,48 @@ class RecitalController extends Controller
 
         return redirect()->route('recitals.index');
     }
+
+  public function show(Recital $recital)
+    {
+        $presaleTickets =
+            $recital->presaleOrders->sum('ticket_quantity');
+
+        $doorTickets =
+            $recital->doorSales->sum('ticket_quantity');
+
+        $presaleRevenue =
+            $recital->presaleOrders->sum('total_amount');
+
+        $doorRevenue =
+            $recital->doorSales->sum('total_amount');
+
+        $totalRevenue =
+            $presaleRevenue + $doorRevenue;
+
+        $latestPresales = $recital
+        ->presaleOrders()
+        ->latest()
+        ->take(5)
+        ->get();
+
+        $latestDoorSales = $recital
+            ->doorSales()
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view(
+            'recitals.show',
+            compact(
+                'recital',
+                'presaleTickets',
+                'doorTickets',
+                'presaleRevenue',
+                'doorRevenue',
+                'totalRevenue',
+                'latestPresales',
+                'latestDoorSales'
+            )
+        );
+    }
 }

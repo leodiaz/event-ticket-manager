@@ -15,11 +15,20 @@ class PresaleOrderController extends Controller
         return view('orders.presale.index', compact('orders'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $recitals = Recital::all();
 
-        return view('orders.presale.create', compact('recitals'));
+        $selectedRecital =
+            $request->recital;
+
+        return view(
+            'orders.presale.create',
+            compact(
+                'recitals',
+                'selectedRecital'
+            )
+        );
     }
 
     public function store(Request $request)
