@@ -18,7 +18,9 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->string('order_number')->unique();
+            $table->string('order_number')
+                ->nullable()
+                ->unique();
 
             $table->string('customer_name');
 
@@ -28,7 +30,9 @@ return new class extends Migration
 
             $table->decimal('total_amount', 10, 2);
 
-            $table->string('qr_code')->unique();
+            $table->string('qr_code')
+                ->nullable()
+                ->unique();
 
             $table->boolean('is_used')
                 ->default(false);

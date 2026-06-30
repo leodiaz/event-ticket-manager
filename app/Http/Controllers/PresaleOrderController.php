@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Services\QrCodeService;
 
 use Illuminate\Http\Request;
 use App\Models\Recital;
@@ -8,6 +9,10 @@ use App\Models\PresaleOrder;
 
 class PresaleOrderController extends Controller
 {
+    public function __construct(private QrCodeService $qrCodeService) 
+    {
+    }
+
     public function index()
     {
         $orders = PresaleOrder::latest()->get();
@@ -37,22 +42,34 @@ class PresaleOrderController extends Controller
 
         $totalAmount = $recital->ticket_price * $request->ticket_quantity;
 
-        PresaleOrder::create([
+        $order = PresaleOrder::create([
             'recital_id' => $request->recital_id,
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
             'ticket_quantity' => $request->ticket_quantity,
-
             'total_amount' => $totalAmount,
-
-            'order_number' => uniqid('ORD-'),
-
-            'qr_code' => uniqid('QR-'),
-
+            'order_number' => '',
+            'qr_code' => '',
             'is_used' => false,
         ]);
 
-        return redirect()->route('presale-orders.index');
+        $orderNumber = 'EA-' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+
+        $qrPath = storage_path(
+            'app/public/qrcodes/' . $orderNumber . '.png'
+        );
+
+        $this->qrCodeService->generate(
+            $orderNumber,
+            $qrPath
+        );
+
+        $order->update([
+            'order_number' => $orderNumber,
+            'qr_code' => 'qrcodes/' . $orderNumber . '.png',
+        ]);
+
+        return redirect()->route('presale-orders.show',$order);
     }
 
     public function edit(PresaleOrder $presaleOrder)
@@ -82,6 +99,14 @@ class PresaleOrderController extends Controller
         ]);
 
         return redirect()->route('presale-orders.index');
+    }
+
+    public function show(PresaleOrder $presaleOrder)
+    {
+        return view(
+            'orders.presale.show',
+            compact('presaleOrder')
+        );
     }
 
     public function destroy(PresaleOrder $presaleOrder)

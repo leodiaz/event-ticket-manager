@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Recital extends Model
-{      
+{
     protected $fillable = [
-    'name',
-    'event_date' => 'date',
-    'location',
-    'ticket_price',
-    'additional_info',
-];
+        'name',
+        'event_date',
+        'location',
+        'ticket_price',
+        'additional_info',
+    ];
+
+    protected $casts = [
+        'event_date' => 'date',
+    ];
 
     public function presaleOrders()
     {

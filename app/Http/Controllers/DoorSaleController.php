@@ -38,27 +38,19 @@ class DoorSaleController extends Controller
 
     public function store(Request $request)
     {
-            $recital = Recital::findOrFail(
-            $request->recital_id
-             );
+        $recital = Recital::findOrFail($request->recital_id);
 
-        $totalAmount =
-            $recital->ticket_price *
-            $request->ticket_quantity;
+        $totalAmount = $recital->ticket_price * $request->ticket_quantity;
 
-        DoorSale::create([
+        $doorSale = DoorSale::create([
             'recital_id' => $request->recital_id,
-
             'customer_name' => $request->customer_name,
-
             'ticket_quantity' => $request->ticket_quantity,
-
             'payment_method' => $request->payment_method,
-
             'total_amount' => $totalAmount,
         ]);
 
-        return redirect()->route('door-sales.index');
+        return redirect()->route('recitals.show', $doorSale->recital);
     }
 
     public function edit(DoorSale $doorSale)
